@@ -2,27 +2,24 @@ using System.Text.Json;
 
 internal sealed class InvertedIndex
 {
-    private readonly string _termsFileName;
-    private readonly string _docsDirectoryName;
+    private readonly string _termsPath;
+    private readonly string _docsDirectoryPath;
 
     private Dictionary<string, HashSet<string>> _index = new(StringComparer.OrdinalIgnoreCase);
 
-    public InvertedIndex(string termsFileName, string docsDirectoryName)
+    public InvertedIndex(string termsPath, string docsDirectoryPath)
     {
-        _termsFileName = termsFileName;
-        _docsDirectoryName = docsDirectoryName;
+        _termsPath = termsPath;
+        _docsDirectoryPath = docsDirectoryPath;
     }
 
     public Dictionary<string, HashSet<string>> BuildIndex()
     {
-        var termsPath = Path.Combine(AppContext.BaseDirectory, _termsFileName);
-        var docsPath = Path.Combine(AppContext.BaseDirectory, _docsDirectoryName);
-
-        var termsJson = File.ReadAllText(termsPath);
+        var termsJson = File.ReadAllText(_termsPath);
         var terms = JsonSerializer.Deserialize<List<string>>(termsJson) ?? [];
 
         InitializeTerms(terms);
-        InitializeDocuments(docsPath, terms);
+        InitializeDocuments(_docsDirectoryPath, terms);
 
         return _index;
     }
@@ -44,8 +41,9 @@ internal sealed class InvertedIndex
         {
             var docName = Path.GetFileName(docPath);
             var content = File.ReadAllText(docPath);
+            char[]? whitespaceSeparator = null; // Or we can use [' ', '\r\n', '\n', '\r'] for new line chars
 
-            var allWords = content.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var allWords = content.Split(whitespaceSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             var words = new HashSet<string>(allWords, StringComparer.OrdinalIgnoreCase);
 
             foreach (var term in terms)
