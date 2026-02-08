@@ -1,5 +1,7 @@
 using System.Text.Json;
 
+namespace StandardBooleanModel;
+
 internal sealed class InvertedIndex
 {
     private readonly string _termsPath;
@@ -22,6 +24,16 @@ internal sealed class InvertedIndex
         InitializeDocuments(_docsDirectoryPath, terms);
 
         return _index;
+    }
+
+    public void PrintIndex()
+    {
+        Console.WriteLine();
+        foreach (var (term, documents) in _index.OrderBy(kvp => kvp.Key))
+        {
+            Console.WriteLine($"{term}: {string.Join(", ", documents.OrderBy(d => d))}");
+        }
+        Console.WriteLine();
     }
 
     private void InitializeTerms(List<string> terms)
