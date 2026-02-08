@@ -2,14 +2,14 @@ using System.Text.Json;
 
 namespace StandardBooleanModel;
 
-internal sealed class InvertedIndex
+internal sealed class InvertedIndexBuilder
 {
     private readonly string _termsPath;
     private readonly string _docsDirectoryPath;
 
-    private Dictionary<string, HashSet<string>> _index = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, HashSet<string>> _index = new(StringComparer.OrdinalIgnoreCase);
 
-    public InvertedIndex(string termsPath, string docsDirectoryPath)
+    public InvertedIndexBuilder(string termsPath, string docsDirectoryPath)
     {
         _termsPath = termsPath;
         _docsDirectoryPath = docsDirectoryPath;
@@ -26,10 +26,10 @@ internal sealed class InvertedIndex
         return _index;
     }
 
-    public void PrintIndex()
+    public static void PrintIndex(Dictionary<string, HashSet<string>> index)
     {
         Console.WriteLine();
-        foreach (var (term, documents) in _index.OrderBy(kvp => kvp.Key))
+        foreach (var (term, documents) in index.OrderBy(kvp => kvp.Key))
         {
             Console.WriteLine($"{term}: {string.Join(", ", documents.OrderBy(d => d))}");
         }

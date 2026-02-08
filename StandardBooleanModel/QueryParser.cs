@@ -70,10 +70,10 @@ sealed class QueryParser
                 continue;
             }
 
-            if (char.IsLetterOrDigit(current) || current == '_')
+            if (char.IsLetterOrDigit(current))
             {
                 var start = index;
-                while (index < query.Length && (char.IsLetterOrDigit(query[index]) || query[index] == '_'))
+                while (index < query.Length && char.IsLetterOrDigit(query[index]))
                 {
                     index++;
                 }
