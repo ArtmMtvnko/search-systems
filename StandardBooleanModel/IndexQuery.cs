@@ -73,13 +73,13 @@ internal sealed class IndexQuery
                 }
 
                 var word = query[start..index];
-                var type = word.Equals("AND", StringComparison.OrdinalIgnoreCase)
-                    ? TokenType.And
-                    : word.Equals("OR", StringComparison.OrdinalIgnoreCase)
-                        ? TokenType.Or
-                        : word.Equals("NOT", StringComparison.OrdinalIgnoreCase)
-                            ? TokenType.Not
-                            : TokenType.Term;
+                var type = word.ToUpper() switch
+                {
+                    "AND" => TokenType.And,
+                    "OR" => TokenType.Or,
+                    "NOT" => TokenType.Not,
+                    _ => TokenType.Term
+                };
 
                 tokens.Add(new Token(type, word));
                 continue;
