@@ -1,5 +1,6 @@
-﻿namespace VectorSpaceModel;
+﻿using System.Text.RegularExpressions;
 
+namespace VectorSpaceModel;
 
 public class VSM
 {
@@ -29,14 +30,51 @@ public class VSM
 
     public void PrintVectors()
     {
-        Console.WriteLine("Vocabulary weights: [{0}]", string.Join(", ", _idfWeights));
+        Console.WriteLine("Vocabulary weights: [{0}]\n", string.Join(", ", _idfWeights));
 
         foreach (var (docName, vector) in _documentVectors)
         {
             Console.WriteLine($"Document: {docName}");
-            Console.WriteLine($"Vector: [{string.Join(", ", vector)}]");
-            Console.WriteLine();
+            Console.WriteLine($"Vector: [{string.Join(", ", vector)}]\n");
         }
+    }
+
+    public Dictionary<string, double> Search(string query)
+    {
+        var queryTerms = Regex.Split(query, @"\s+");
+        var searchVector = CaclulateTfIdf(queryTerms);
+
+        var searchResults = new Dictionary<string, double>();
+
+        foreach (var (docName, docVector) in _documentVectors)
+        {
+            searchResults[docName] = Similarity(searchVector, docVector);
+        }
+
+        return searchResults;
+    }
+
+    private static double Similarity(double[] a, double[] b)
+    {
+        double dot = 0;
+        double normA = 0;
+        double normB = 0;
+
+        for (int i = 0; i < a.Length; i++)
+        {
+            var ai = a[i];
+            var bi = b[i];
+            dot += ai * bi;
+            normA += ai * ai;
+            normB += bi * bi;
+        }
+
+        if (normA == 0 || normB == 0)
+        {
+            return 0;
+        }
+
+        return dot / (Math.Sqrt(normA) * Math.Sqrt(normB));
     }
 
     private HashSet<string> CreateVocabularySet()
@@ -96,5 +134,22 @@ public class VSM
                 weights[i] = tf * idf;
             }
         }
+    }
+
+    private double[] CaclulateTfIdf(string[] terms)
+    {
+        var weights = new double[_vocabulary.Length];
+
+        for (int i = 0; i < _vocabulary.Length; i++)
+        {
+            var vocabTerm = _vocabulary[i];
+            var frequency = terms.Count(vocabTerm);
+            var tf = Math.Log(1 + frequency);
+            var idf = _idfWeights[i];
+
+            weights[i] = tf * idf;
+        }
+
+        return weights;
     }
 }
