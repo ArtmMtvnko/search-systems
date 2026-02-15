@@ -9,7 +9,10 @@ var model = new VSM(docsPath);
 while (true)
 {
     Console.WriteLine("\nEnter search query (or hit enter to quit):");
+    Console.ForegroundColor = ConsoleColor.Cyan;
     var query = Console.ReadLine();
+    Console.ResetColor();
+    Console.WriteLine();
 
     if (string.IsNullOrWhiteSpace(query))
     {
