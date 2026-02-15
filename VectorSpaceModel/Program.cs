@@ -8,7 +8,7 @@ var model = new VSM(docsPath);
 
 while (true)
 {
-    Console.WriteLine("Enter search query (or hit enter to quit):");
+    Console.WriteLine("\nEnter search query (or hit enter to quit):");
     var query = Console.ReadLine();
 
     if (string.IsNullOrWhiteSpace(query))
