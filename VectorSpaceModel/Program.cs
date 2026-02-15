@@ -1,9 +1,10 @@
 ﻿using VectorSpaceModel;
 
-var docsPath = @"C:\Users\artem\Local Documents\University\Search Engine\VectorSpaceModel\docs\";
+Console.WriteLine("Enter path to directory with documents:");
+var docsPath = Console.ReadLine() ?? string.Empty;
 
 var model = new VSM(docsPath);
-model.PrintVectors();
+//model.PrintVectors();
 
 while (true)
 {
