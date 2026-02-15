@@ -57,7 +57,7 @@ internal sealed class InvertedIndexBuilder
 
             var allWords = content.Split(whitespaceSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             var words = new HashSet<string>(allWords, StringComparer.OrdinalIgnoreCase);
-
+            
             foreach (var term in terms)
             {
                 if (words.Contains(term))
