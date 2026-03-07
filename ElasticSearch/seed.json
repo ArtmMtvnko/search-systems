@@ -1,0 +1,37 @@
+[
+  {
+    "name": "JavaScript",
+    "first_appeared": "1995-12-04",
+    "is_statically_typed": false,
+    "active_users": 25000000,
+    "paradigms": [ "event-driven", "functional", "imperative", "object-oriented" ]
+  },
+  {
+    "name": "Python",
+    "first_appeared": "1991-02-20",
+    "is_statically_typed": false,
+    "active_users": 8000000,
+    "paradigms": [ "object-oriented", "procedural", "functional" ]
+  },
+  {
+    "name": "C#",
+    "first_appeared": "2000-01-01",
+    "is_statically_typed": true,
+    "active_users": 8000000,
+    "paradigms": [ "object-oriented", "functional", "imperative", "generic" ]
+  },
+  {
+    "name": "Kotlin",
+    "first_appeared": "2011-07-22",
+    "is_statically_typed": true,
+    "active_users": 5000000,
+    "paradigms": [ "object-oriented", "functional", "imperative" ]
+  },
+  {
+    "name": "Go Lang",
+    "first_appeared": "2009-11-10",
+    "is_statically_typed": true,
+    "active_users": 3000000,
+    "paradigms": [ "concurrent", "imperative", "procedural" ]
+  }
+]
