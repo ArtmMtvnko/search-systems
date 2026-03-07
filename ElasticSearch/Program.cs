@@ -65,6 +65,33 @@ while (true)
 
         var response = await elasticClient.InsertDocument(doc);
         AnsiConsole.MarkupLine(response.ToString());
-        AnsiConsole.Ask<string>("");
+        AnsiConsole.Confirm("Continue");
+    }
+
+    if (option == "Delete document")
+    {
+        var documents = await elasticClient.GetAllDocuments();
+
+        var names = documents.Select(doc => doc.ElasticDocument.Name);
+
+        var nameToRemoveBy = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Pick a document to remove")
+                .AddChoices([..names, "Cancel"]));
+
+        if (nameToRemoveBy == "Cancel")
+        {
+            continue;
+        }
+
+        var docToRemove = documents.Find(doc => doc.ElasticDocument.Name == nameToRemoveBy);
+
+        if (docToRemove is not null)
+        {
+            var response = await elasticClient.RemoveDocument(docToRemove.Id);
+            AnsiConsole.MarkupLine(response.ToString());
+        }
+
+        AnsiConsole.Confirm("Continue");
     }
 }
