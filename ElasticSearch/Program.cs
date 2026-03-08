@@ -96,7 +96,9 @@ while (true)
 
         if (docToRemove is not null)
         {
+            AnsiConsole.MarkupLine($"Selected document: Removing [Yellow]{nameToRemoveBy}[/] with id [Yellow]{docToRemove.Id}[/] ...");
             var response = await elasticClient.RemoveDocument(docToRemove.Id);
+            AnsiConsole.MarkupLine("[Green]Success![/]");
             AnsiConsole.MarkupLine(response.ToString());
         }
 

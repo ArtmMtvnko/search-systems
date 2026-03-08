@@ -198,4 +198,3 @@ class ElasticSearchHit
     [JsonPropertyName("_source")]
     public required ElasticDocument ElasticDocument { get; set; }
 }
-
