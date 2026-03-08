@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace ElasticSearch;
+﻿namespace ElasticSearch;
 
 class ElasticDocument
 {
