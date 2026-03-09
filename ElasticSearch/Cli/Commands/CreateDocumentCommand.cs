@@ -1,4 +1,5 @@
 using Spectre.Console;
+using ElasticSearch.Models;
 
 namespace ElasticSearch.Cli.Commands;
 

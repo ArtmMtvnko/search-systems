@@ -1,4 +1,6 @@
 ﻿using ElasticSearch;
+using ElasticSearch.Cli;
+using ElasticSearch.Cli.Commands;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 
