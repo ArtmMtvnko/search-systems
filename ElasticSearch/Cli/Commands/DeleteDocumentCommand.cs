@@ -8,7 +8,7 @@ class DeleteDocumentCommand(ElasticClient elasticClient) : ICliCommand
 
     public async Task ExecuteAsync()
     {
-        var documents = await elasticClient.GetAllDocuments();
+        var documents = await elasticClient.GetAllDocumentsAsync();
         var names = documents.Select(doc => doc.ElasticDocument.Name);
 
         var nameToRemoveBy = AnsiConsole.Prompt(
@@ -26,7 +26,7 @@ class DeleteDocumentCommand(ElasticClient elasticClient) : ICliCommand
         if (docToRemove is not null)
         {
             AnsiConsole.MarkupLine($"Selected document: Removing [Yellow]{nameToRemoveBy}[/] with id [Yellow]{docToRemove.Id}[/] ...");
-            var response = await elasticClient.RemoveDocument(docToRemove.Id);
+            var response = await elasticClient.RemoveDocumentAsync(docToRemove.Id);
             AnsiConsole.MarkupLine("[Green]Success![/]");
             AnsiConsole.MarkupLine(response.ToString());
         }

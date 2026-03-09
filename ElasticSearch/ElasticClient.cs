@@ -2,13 +2,17 @@
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 
 namespace ElasticSearch;
 
 class ElasticClient
 {
+    private static readonly JsonSerializerOptions SerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+    };
+
     private readonly HttpClient _httpClient;
     private readonly string _indexName;
 
@@ -29,67 +33,21 @@ class ElasticClient
         _indexName = configuration["IndexName"] ?? throw new KeyNotFoundException("IndexName is not provided");
     }
 
-    public async Task<List<ElasticSearchHit>> GetAllDocuments()
+    public Task<List<ElasticSearchHit>> GetAllDocumentsAsync() => SearchAsync(new
     {
-        var payload = new Dictionary<string, object>
+        query = new
         {
-            ["query"] = new Dictionary<string, object>
-            {
-                ["match_all"] = new { }
-            }
-        };
-
-        var jsonPayload = JsonSerializer.Serialize(payload);
-        using var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-        using var response = await _httpClient.PostAsync($"{_indexName}/_search", content);
-        response.EnsureSuccessStatusCode();
-
-        var searchResponse = await ParseElasticHitsAsync(response);
-        return searchResponse.Hits.Documents;
-    }
-
-    public async Task<HttpResponseMessage> InsertDocument(ElasticDocument doc)
-    {
-        var serializerOptions = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-            WriteIndented = true
-        };
-        var jsonDoc = JsonSerializer.Serialize(doc, serializerOptions);
-        using var content = new StringContent(jsonDoc, Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PostAsync($"{_indexName}/_doc", content);
-        return response;
-    }
-
-    public async Task<HttpResponseMessage> RemoveDocument(string id)
-    {
-        return await _httpClient.DeleteAsync($"{_indexName}/_doc/{id}");
-    }
-
-    public async Task<List<ElasticSearchHit>> Filter(FilterParams filterParams)
-    {
-        var filters = new List<object>
-        {
-            CreateRangeFilter("first_appeared", filterParams.FirstAppearedAfter, filterParams.FirstAppearedBefore),
-            CreateRangeFilter("active_users", filterParams.ActiveUsersMoreThan, filterParams.ActiveUsersLessThan),
-        };
-
-        if (!string.IsNullOrWhiteSpace(filterParams.Name))
-        {
-            filters.Add(CreateWildcardFilter("name", filterParams.Name));
+            match_all = new { }
         }
+    });
 
-        if (filterParams.IsStaticallyTyped is not null)
-        {
-            filters.Add(CreateBoolFilter("is_statically_typed", filterParams.IsStaticallyTyped.Value));
-        }
+    public Task<HttpResponseMessage> InsertDocumentAsync(ElasticDocument doc) => PostJsonAsync($"{_indexName}/_doc", doc);
 
-        if (filterParams.Paradigms.Count > 0)
-        {
-            filters.Add(CreateTermsFilter("paradigms", filterParams.Paradigms));
-        }
+    public Task<HttpResponseMessage> RemoveDocumentAsync(string id) => _httpClient.DeleteAsync($"{_indexName}/_doc/{id}");
+
+    public Task<List<ElasticSearchHit>> FilterAsync(FilterParams filterParams)
+    {
+        var filters = BuildFilters(filterParams);
 
         var query = new
         {
@@ -108,17 +66,49 @@ class ElasticClient
             }
         };
 
-        var jsonQuery = JsonSerializer.Serialize(query);
-        using var content = new StringContent(jsonQuery, Encoding.UTF8, "application/json");
+        return SearchAsync(query);
+    }
 
-        using var response = await _httpClient.PostAsync($"{_indexName}/_search", content);
+    private static List<object> BuildFilters(FilterParams filterParams)
+    {
+        var filters = new List<object>
+        {
+            CreateRangeFilter("first_appeared", filterParams.FirstAppearedAfter, filterParams.FirstAppearedBefore),
+            CreateRangeFilter("active_users", filterParams.ActiveUsersMoreThan, filterParams.ActiveUsersLessThan)
+        };
+
+        if (!string.IsNullOrWhiteSpace(filterParams.Name))
+        {
+            filters.Add(CreateWildcardFilter("name", filterParams.Name));
+        }
+
+        if (filterParams.IsStaticallyTyped is not null)
+        {
+            filters.Add(CreateTermFilter("is_statically_typed", filterParams.IsStaticallyTyped.Value));
+        }
+
+        if (filterParams.Paradigms.Count > 0)
+        {
+            filters.Add(CreateTermsFilter("paradigms", filterParams.Paradigms));
+        }
+
+        return filters;
+    }
+
+    private async Task<List<ElasticSearchHit>> SearchAsync(object payload)
+    {
+        using var response = await PostJsonAsync($"{_indexName}/_search", payload);
         response.EnsureSuccessStatusCode();
 
         var searchResponse = await ParseElasticHitsAsync(response);
         return searchResponse.Hits.Documents;
     }
 
-    private static object CreateRangeFilter<T>(string field, T gte, T lte) => new
+    private Task<HttpResponseMessage> PostJsonAsync(string requestUri, object payload) => 
+        _httpClient.PostAsJsonAsync(requestUri, payload, SerializerOptions);
+    
+
+    private static object CreateRangeFilter<T>(string field, T? gte, T lte) => new
     {
         range = new Dictionary<string, object>
         {
@@ -150,7 +140,7 @@ class ElasticClient
         }
     };
 
-    private static object CreateBoolFilter(string field, bool value) => new
+    private static object CreateTermFilter(string field, bool value) => new
     {
         term = new Dictionary<string, object>
         {
@@ -160,22 +150,16 @@ class ElasticClient
 
     private static async Task<ElasticSearchResponse> ParseElasticHitsAsync(HttpResponseMessage response)
     {
-        var fallbackResponse = new ElasticSearchResponse
-        {
-            Hits = new ElasticSearchHits
-            {
-                Documents = []
-            }
-        };
-
-        var serializerOptions = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-            WriteIndented = true
-        };
-
-        return await response.Content.ReadFromJsonAsync<ElasticSearchResponse>(serializerOptions) ?? fallbackResponse;
+        return await response.Content.ReadFromJsonAsync<ElasticSearchResponse>(SerializerOptions) ?? CreateEmptySearchResponse();
     }
+
+    private static ElasticSearchResponse CreateEmptySearchResponse() => new()
+    {
+        Hits = new ElasticSearchHits
+        {
+            Documents = []
+        }
+    };
 }
 
 

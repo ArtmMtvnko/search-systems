@@ -28,7 +28,7 @@ class SearchDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions 
             Paradigms = paradigms
         };
 
-        var documents = await elasticClient.Filter(filterParams);
+        var documents = await elasticClient.FilterAsync(filterParams);
 
         AnsiConsole.WriteLine(JsonSerializer.Serialize(documents, serializerOptions));
         CliPrompts.ConfirmContinue();
