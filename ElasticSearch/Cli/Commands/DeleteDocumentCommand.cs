@@ -1,6 +1,6 @@
 using Spectre.Console;
 
-namespace ElasticSearch;
+namespace ElasticSearch.Cli.Commands;
 
 class DeleteDocumentCommand(ElasticClient elasticClient) : ICliCommand
 {

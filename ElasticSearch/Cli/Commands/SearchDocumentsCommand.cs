@@ -1,7 +1,7 @@
 using Spectre.Console;
 using System.Text.Json;
 
-namespace ElasticSearch;
+namespace ElasticSearch.Cli.Commands;
 
 class SearchDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions serializerOptions) : ICliCommand
 {
@@ -17,7 +17,7 @@ class SearchDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions 
         var activeUsersLessThan = AnsiConsole.Ask("Active users less than:", int.MaxValue);
         var paradigms = CliPrompts.AskParadigms(required: false);
 
-        var filterDto = new FilterParams
+        var filterParams = new FilterParams
         {
             Name = nameSearch,
             IsStaticallyTyped = isTyped,
@@ -28,7 +28,7 @@ class SearchDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions 
             Paradigms = paradigms
         };
 
-        var documents = await elasticClient.Filter(filterDto);
+        var documents = await elasticClient.Filter(filterParams);
 
         AnsiConsole.WriteLine(JsonSerializer.Serialize(documents, serializerOptions));
         CliPrompts.ConfirmContinue();

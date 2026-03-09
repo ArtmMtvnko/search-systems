@@ -1,4 +1,4 @@
-﻿namespace ElasticSearch;
+﻿namespace ElasticSearch.Models;
 
 class ElasticDocument
 {

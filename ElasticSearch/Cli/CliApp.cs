@@ -1,6 +1,6 @@
 using Spectre.Console;
 
-namespace ElasticSearch;
+namespace ElasticSearch.Cli;
 
 class CliApp(IEnumerable<ICliCommand> commands)
 {

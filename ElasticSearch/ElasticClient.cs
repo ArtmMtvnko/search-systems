@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ElasticSearch.Models;
+using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace ElasticSearch;
 
@@ -88,7 +88,7 @@ class ElasticClient
 
         if (filterParams.Paradigms.Count > 0)
         {
-            CreateTermsFilter("paradigms", filterParams.Paradigms);
+            filters.Add(CreateTermsFilter("paradigms", filterParams.Paradigms));
         }
 
         var query = new
@@ -178,23 +178,4 @@ class ElasticClient
     }
 }
 
-class ElasticSearchResponse
-{
-    [JsonPropertyName("hits")]
-    public required ElasticSearchHits Hits { get; set; }
-}
 
-class ElasticSearchHits
-{
-    [JsonPropertyName("hits")]
-    public required List<ElasticSearchHit> Documents { get; set; }
-}
-
-class ElasticSearchHit
-{
-    [JsonPropertyName("_id")]
-    public required string Id { get; set; }
-
-    [JsonPropertyName("_source")]
-    public required ElasticDocument ElasticDocument { get; set; }
-}
