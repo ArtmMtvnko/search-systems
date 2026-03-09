@@ -26,7 +26,7 @@ class CreateDocumentCommand(ElasticClient elasticClient) : ICliCommand
             Paradigms = paradigms
         };
 
-        var response = await elasticClient.InsertDocument(doc);
+        var response = await elasticClient.InsertDocumentAsync(doc);
         AnsiConsole.MarkupLine(response.ToString());
         CliPrompts.ConfirmContinue();
     }
