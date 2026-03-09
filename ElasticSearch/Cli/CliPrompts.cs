@@ -1,6 +1,6 @@
 using Spectre.Console;
 
-namespace ElasticSearch;
+namespace ElasticSearch.Cli;
 
 static class CliPrompts
 {
