@@ -13,6 +13,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
 
+    <None Update="seed.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <PackageReference Include="Spectre.Console" Version="0.54.0" />
