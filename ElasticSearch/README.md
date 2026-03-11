@@ -72,7 +72,7 @@ Content-Type: application/json
 
 {
   "analyzer": "code_analyzer",
-  "text": "const a = 10; const b = 20; console.log('c = ', a + b)"
+  "text": "const a = 10; const b = 20; \n console.log('c = ', a + b)"
 }
 ```
 
