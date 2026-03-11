@@ -16,6 +16,9 @@ class CreateDocumentCommand(ElasticClient elasticClient) : ICliCommand
         var isTyped = AnsiConsole.Confirm("Is it statically typed language?");
         var users = AnsiConsole.Ask<int>("Active users:");
         var paradigms = CliPrompts.AskParadigms();
+        var description = AnsiConsole.Ask<string>("Description:");
+        var history = AnsiConsole.Ask<string>("History:");
+        var codeExample = AnsiConsole.Ask<string>("Code example:");
 
         var doc = new ElasticDocument
         {
@@ -23,7 +26,10 @@ class CreateDocumentCommand(ElasticClient elasticClient) : ICliCommand
             FirstAppeared = firstAppeared,
             IsStaticallyTyped = isTyped,
             ActiveUsers = users,
-            Paradigms = paradigms
+            Paradigms = paradigms,
+            Description = description,
+            History = history,
+            CodeExample = codeExample
         };
 
         var response = await elasticClient.InsertDocumentAsync(doc);
