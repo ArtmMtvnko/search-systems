@@ -3,9 +3,9 @@ using System.Text.Json;
 
 namespace ElasticSearch.Cli.Commands;
 
-class SearchDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions serializerOptions) : ICliCommand
+class FilterDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions serializerOptions) : ICliCommand
 {
-    public string Name => "Search documents";
+    public string Name => "Filter documents";
 
     public async Task ExecuteAsync()
     {

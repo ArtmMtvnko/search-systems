@@ -19,7 +19,7 @@ var elasticClient = new ElasticClient(configuration);
 
 var app = new CliApp([
     new CreateDocumentCommand(elasticClient),
-    new SearchDocumentsCommand(elasticClient, serializerOptions),
+    new FilterDocumentsCommand(elasticClient, serializerOptions),
     new DeleteDocumentCommand(elasticClient),
     new SeedDatabaseCommand(elasticClient)
 ]);
