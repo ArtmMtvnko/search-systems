@@ -9,26 +9,28 @@ class SearchDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions 
     {
         ["Description"] = "description",
         ["History"] = "history",
-        ["CodeExample"] = "code_example",
-        ["All"] = "all"
+        ["CodeExample"] = "code_example"
     };
 
     public string Name => "Search documents";
 
     public async Task ExecuteAsync()
     {
-        var option = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Search by field")
-                .AddChoices(["Description", "History", "CodeExample", "All", "Cancel"]));
+        var options = AnsiConsole.Prompt(
+            new MultiSelectionPrompt<string>()
+                .Title("Select fields to search by (leave empty options to return back)")
+                .InstructionsText("[grey](Press [blue]<space>[/] to toggle a field, [green]<enter>[/] to accept)[/]")
+                .NotRequired()
+                .AddChoices(["Description", "History", "CodeExample"]));
 
-        if (option == "Cancel")
+        if (options.Count == 0)
         {
             return;
         }
 
+        var fields = options.Select(option => SearchFieldMappings[option]).ToArray();
         var query = AnsiConsole.Ask<string>("Search text:");
-        var documents = await elasticClient.SearchByTextAsync(SearchFieldMappings[option], query);
+        var documents = await elasticClient.SearchByTextAsync(fields, query);
 
         AnsiConsole.WriteLine(JsonSerializer.Serialize(documents, serializerOptions));
         CliPrompts.ConfirmContinue();
