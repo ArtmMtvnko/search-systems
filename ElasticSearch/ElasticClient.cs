@@ -45,6 +45,34 @@ class ElasticClient
 
     public Task<HttpResponseMessage> RemoveDocumentAsync(string id) => _httpClient.DeleteAsync($"{_indexName}/_doc/{id}");
 
+    public Task<List<ElasticSearchHit>> SearchByTextAsync(string field, string query)
+    {
+        object payload = field == "all"
+            ? new
+            {
+                query = new
+                {
+                    multi_match = new
+                    {
+                        query,
+                        fields = new[] { "description", "history", "code_example" }
+                    }
+                }
+            }
+            : new
+            {
+                query = new
+                {
+                    match = new Dictionary<string, string>
+                    {
+                        [field] = query
+                    }
+                }
+            };
+
+        return SearchAsync(payload);
+    }
+
     public Task<List<ElasticSearchHit>> FilterAsync(FilterParams filterParams)
     {
         var filters = BuildFilters(filterParams);
