@@ -14,7 +14,7 @@ class ElasticSearchHits
     public required List<ElasticSearchHit> Documents { get; set; }
 
     [JsonPropertyName("max_score")]
-    public required double MaxScore { get; set; }
+    public double? MaxScore { get; set; }
 }
 
 class ElasticSearchHit

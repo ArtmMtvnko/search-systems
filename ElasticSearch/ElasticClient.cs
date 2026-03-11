@@ -68,7 +68,7 @@ class ElasticClient
         Hits = new ElasticSearchHits
         {
             Documents = [],
-            MaxScore = 0
+            MaxScore = null
         }
     };
 }
