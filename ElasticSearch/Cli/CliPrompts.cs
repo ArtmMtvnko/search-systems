@@ -1,3 +1,4 @@
+using ElasticSearch.Models;
 using Spectre.Console;
 
 namespace ElasticSearch.Cli;
@@ -58,5 +59,40 @@ static class CliPrompts
     public static void ConfirmContinue()
     {
         AnsiConsole.Confirm("Continue");
+    }
+
+    public static void ShowDocuments(IReadOnlyCollection<ElasticSearchHit> documents)
+    {
+        if (documents.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[Yellow]No documents found.[/]");
+            return;
+        }
+
+        foreach (var hit in documents)
+        {
+            var document = hit.ElasticDocument;
+
+            var panel = new Panel(new Rows(
+                new Markup($"[Grey]Id:[/] {Markup.Escape(hit.Id)}"),
+                new Markup($"[Grey]Score:[/] {hit.Score:F2}"),
+                new Markup($"[Grey]First appeared:[/] {document.FirstAppeared:yyyy-MM-dd}"),
+                new Markup($"[Grey]Statically typed:[/] {document.IsStaticallyTyped}"),
+                new Markup($"[Grey]Active users:[/] {document.ActiveUsers:N0}"),
+                new Markup($"[Grey]Paradigms:[/] {Markup.Escape(string.Join(", ", document.Paradigms))}"),
+                new Markup("[Grey]Description:[/]"),
+                new Text(document.Description),
+                new Markup("[Grey]History:[/]"),
+                new Text(document.History),
+                new Markup("[Grey]Code example:[/]"),
+                new Text(document.CodeExample)))
+            {
+                Header = new PanelHeader(Markup.Escape(document.Name)),
+                Expand = true
+            };
+
+            AnsiConsole.Write(panel);
+            AnsiConsole.WriteLine();
+        }
     }
 }

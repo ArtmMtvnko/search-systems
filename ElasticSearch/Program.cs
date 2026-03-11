@@ -2,13 +2,6 @@
 using ElasticSearch.Cli;
 using ElasticSearch.Cli.Commands;
 using Microsoft.Extensions.Configuration;
-using System.Text.Json;
-
-var serializerOptions = new JsonSerializerOptions
-{
-    PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-    WriteIndented = true
-};
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false)
@@ -19,8 +12,8 @@ var elasticClient = new ElasticClient(configuration);
 
 var app = new CliApp([
     new CreateDocumentCommand(elasticClient),
-    new SearchDocumentsCommand(elasticClient, serializerOptions),
-    new FilterDocumentsCommand(elasticClient, serializerOptions),
+    new SearchDocumentsCommand(elasticClient),
+    new FilterDocumentsCommand(elasticClient),
     new DeleteDocumentCommand(elasticClient),
     new SeedDatabaseCommand(elasticClient)
 ]);

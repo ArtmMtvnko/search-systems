@@ -1,9 +1,8 @@
 using Spectre.Console;
-using System.Text.Json;
 
 namespace ElasticSearch.Cli.Commands;
 
-class FilterDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions serializerOptions) : ICliCommand
+class FilterDocumentsCommand(ElasticClient elasticClient) : ICliCommand
 {
     public string Name => "Filter documents";
 
@@ -30,7 +29,7 @@ class FilterDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions 
 
         var documents = await elasticClient.FilterAsync(filterParams);
 
-        AnsiConsole.WriteLine(JsonSerializer.Serialize(documents, serializerOptions));
+        CliPrompts.ShowDocuments(documents);
         CliPrompts.ConfirmContinue();
     }
 }
