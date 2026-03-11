@@ -1,37 +1,112 @@
 [
   {
+    "name": "Java",
+    "first_appeared": "1995-05-23",
+    "is_statically_typed": true,
+    "active_users": 17000000,
+    "paradigms": [ "Object-oriented", "Imperative", "Generic" ],
+    "description": "Java is a statically typed general-purpose language designed for portability through the Java Virtual Machine.",
+    "history": "Java was created at Sun Microsystems by James Gosling and released in 1995. It became widely used in enterprise software, Android development, and large-scale backend systems.",
+    "code_example": "public class Main {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, World!\");\n  }\n}"
+  },
+  {
     "name": "JavaScript",
     "first_appeared": "1995-12-04",
     "is_statically_typed": false,
     "active_users": 25000000,
-    "paradigms": [ "event-driven", "functional", "imperative", "object-oriented" ]
+    "paradigms": [ "Event-driven", "Functional", "Imperative", "Object-oriented" ],
+    "description": "JavaScript is a dynamically typed language primarily used for interactive web applications, servers, and tooling.",
+    "history": "JavaScript was created by Brendan Eich in 1995 for Netscape Navigator. It evolved from a browser scripting language into one of the most widely used languages across frontend and backend development.",
+    "code_example": "function greet(name) {\n  return `Hello, ${name}!`;\n}\n\nconsole.log(greet('World'));"
   },
   {
-    "name": "Python",
-    "first_appeared": "1991-02-20",
-    "is_statically_typed": false,
-    "active_users": 30000000,
-    "paradigms": [ "object-oriented", "procedural", "functional" ]
+    "name": "C",
+    "first_appeared": "1972-01-01",
+    "is_statically_typed": true,
+    "active_users": 7000000,
+    "paradigms": [ "Procedural", "Imperative" ],
+    "description": "C is a statically typed systems programming language known for low-level memory access and high performance.",
+    "history": "C was developed by Dennis Ritchie at Bell Labs in the early 1970s. It became foundational for operating systems, compilers, embedded software, and many later programming languages.",
+    "code_example": "#include <stdio.h>\n\nint main(void) {\n  printf(\"Hello, World!\\n\");\n  return 0;\n}"
+  },
+  {
+    "name": "C++",
+    "first_appeared": "1985-10-01",
+    "is_statically_typed": true,
+    "active_users": 6000000,
+    "paradigms": [ "Object-oriented", "Procedural", "Generic", "Functional" ],
+    "description": "C++ is a statically typed language that extends C with abstractions for object-oriented, generic, and high-performance programming.",
+    "history": "C++ was created by Bjarne Stroustrup as an extension of C. Since its release in the 1980s it has been heavily used in game engines, desktop applications, finance, and performance-critical systems.",
+    "code_example": "#include <iostream>\n\nint main() {\n  std::cout << \"Hello, World!\\n\";\n  return 0;\n}"
   },
   {
     "name": "C#",
     "first_appeared": "2000-01-01",
     "is_statically_typed": true,
     "active_users": 8000000,
-    "paradigms": [ "object-oriented", "functional", "imperative", "generic" ]
+    "paradigms": [ "Object-oriented", "Functional", "Imperative", "Generic" ],
+    "description": "C# is a statically typed modern language in the .NET ecosystem used for web, desktop, cloud, and game development.",
+    "history": "C# was developed by Microsoft under the leadership of Anders Hejlsberg and introduced in 2000. It has grown from a Windows-focused language into a cross-platform language used throughout the .NET platform.",
+    "code_example": "using System;\n\nConsole.WriteLine(\"Hello, World!\");"
   },
   {
-    "name": "Kotlin",
-    "first_appeared": "2011-07-22",
+    "name": "Python",
+    "first_appeared": "1991-02-20",
+    "is_statically_typed": false,
+    "active_users": 30000000,
+    "paradigms": [ "Object-oriented", "Procedural", "Functional" ],
+    "description": "Python is a dynamically typed general-purpose language valued for readability, productivity, and a large ecosystem.",
+    "history": "Python was created by Guido van Rossum and first released in 1991. It became a dominant language in scripting, web development, automation, data science, and machine learning.",
+    "code_example": "def greet(name):\n    return f'Hello, {name}!'\n\nprint(greet('World'))"
+  },
+  {
+    "name": "TypeScript",
+    "first_appeared": "2012-10-01",
     "is_statically_typed": true,
-    "active_users": 5000000,
-    "paradigms": [ "object-oriented", "functional", "imperative" ]
+    "active_users": 12000000,
+    "paradigms": [ "Object-oriented", "Functional", "Imperative" ],
+    "description": "TypeScript is a statically typed superset of JavaScript that adds types and tooling support for large applications.",
+    "history": "TypeScript was developed by Microsoft and released in 2012. It became popular as a way to scale JavaScript projects while still compiling to standard JavaScript for broad runtime support.",
+    "code_example": "function greet(name: string): string {\n  return `Hello, ${name}!`;\n}\n\nconsole.log(greet('World'));"
   },
   {
     "name": "Go Lang",
     "first_appeared": "2009-11-10",
     "is_statically_typed": true,
     "active_users": 3000000,
-    "paradigms": [ "concurrent", "imperative", "procedural" ]
+    "paradigms": [ "Concurrent", "Imperative", "Procedural" ],
+    "description": "Go is a statically typed language designed for simplicity, concurrency, and reliable backend and infrastructure software.",
+    "history": "Go was created at Google by Robert Griesemer, Rob Pike, and Ken Thompson. Since its public release in 2009 it has become common in cloud services, developer tools, and distributed systems.",
+    "code_example": "package main\n\nimport \"fmt\"\n\nfunc main() {\n  fmt.Println(\"Hello, World!\")\n}"
+  },
+  {
+    "name": "Kotlin",
+    "first_appeared": "2011-07-22",
+    "is_statically_typed": true,
+    "active_users": 5000000,
+    "paradigms": [ "Object-oriented", "Functional", "Imperative" ],
+    "description": "Kotlin is a statically typed language that targets the JVM and other platforms with concise syntax and strong interoperability.",
+    "history": "Kotlin was created by JetBrains and publicly introduced in 2011. It gained broad adoption after becoming an officially supported language for Android development.",
+    "code_example": "fun main() {\n    println(\"Hello, World!\")\n}"
+  },
+  {
+    "name": "Swift",
+    "first_appeared": "2014-06-02",
+    "is_statically_typed": true,
+    "active_users": 2500000,
+    "paradigms": [ "Object-oriented", "Functional", "Imperative" ],
+    "description": "Swift is a statically typed language developed by Apple for building applications across its platforms with safety and speed.",
+    "history": "Swift was introduced by Apple in 2014 as a successor to Objective-C for iOS and macOS development. It expanded into server-side and cross-platform use while remaining strongest in the Apple ecosystem.",
+    "code_example": "print(\"Hello, World!\")"
+  },
+  {
+    "name": "Rust",
+    "first_appeared": "2010-07-07",
+    "is_statically_typed": true,
+    "active_users": 2200000,
+    "paradigms": [ "Functional", "Imperative", "Concurrent", "Generic" ],
+    "description": "Rust is a statically typed systems language focused on memory safety, concurrency, and performance without a garbage collector.",
+    "history": "Rust began as a Mozilla research project led by Graydon Hoare and was first announced in 2010. It has since gained strong adoption for safe systems programming, tooling, and infrastructure.",
+    "code_example": "fn main() {\n    println!(\"Hello, World!\");\n}"
   }
 ]
