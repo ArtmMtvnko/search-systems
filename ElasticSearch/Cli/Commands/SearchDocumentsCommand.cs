@@ -1,9 +1,8 @@
 using Spectre.Console;
-using System.Text.Json;
 
 namespace ElasticSearch.Cli.Commands;
 
-class SearchDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions serializerOptions) : ICliCommand
+class SearchDocumentsCommand(ElasticClient elasticClient) : ICliCommand
 {
     private static readonly Dictionary<string, string> SearchFieldMappings = new()
     {
@@ -32,7 +31,7 @@ class SearchDocumentsCommand(ElasticClient elasticClient, JsonSerializerOptions 
         var query = AnsiConsole.Ask<string>("Search text:");
         var documents = await elasticClient.SearchByTextAsync(fields, query);
 
-        AnsiConsole.WriteLine(JsonSerializer.Serialize(documents, serializerOptions));
+        CliPrompts.ShowDocuments(documents);
         CliPrompts.ConfirmContinue();
     }
 }
